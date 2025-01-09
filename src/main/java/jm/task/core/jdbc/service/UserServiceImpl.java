@@ -8,34 +8,34 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private static UserDaoJDBCImpl JDBC = new UserDaoJDBCImpl();
+    private static UserDaoJDBCImpl jdbc = new UserDaoJDBCImpl();
 
     @Override
     public void createUsersTable() {
-        JDBC.createUsersTable();
+        jdbc.createUsersTable();
     }
     @Override
     public void dropUsersTable() {
-        JDBC.dropUsersTable();
+        jdbc.dropUsersTable();
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        JDBC.saveUser(name, lastName, age);
+        jdbc.saveUser(name, lastName, age);
     }
 
     @Override
     public void removeUserById(long id) {
-        JDBC.removeUserById(id);
+        jdbc.removeUserById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return JDBC.getAllUsers();
+        return jdbc.getAllUsers();
     }
 
     @Override
     public void cleanUsersTable() {
-        JDBC.cleanUsersTable();
+        jdbc.cleanUsersTable();
     }
 }
