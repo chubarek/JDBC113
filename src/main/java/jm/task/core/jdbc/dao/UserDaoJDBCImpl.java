@@ -11,6 +11,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
 
     }
+
     @Override
     public void createUsersTable() {
         try (Connection connection = Util.connectJDBC();
@@ -21,17 +22,18 @@ public class UserDaoJDBCImpl implements UserDao {
 
             if (tables.next()) {
                 stmt.executeUpdate(
-                        "CREATE TABLE USERS (\n" +
-                                "ID INT AUTO_INCREMENT PRIMARY KEY,\n" +
-                                "NAME VARCHAR(100) NOT NULL,\n" +
-                                "LAST_NAME VARCHAR(100) NOT NULL,\n" +
-                                "AGE INT NOT NULL)");
+                        "CREATE TABLE users (\n" +
+                                "id INT AUTO_INCREMENT PRIMARY KEY,\n" +
+                                "name VARCHAR(100) NOT NULL,\n" +
+                                "lastName VARCHAR(100) NOT NULL,\n" +
+                                "age INT NOT NULL)");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void dropUsersTable() {
         try (Connection connection = Util.connectJDBC();
@@ -41,18 +43,19 @@ public class UserDaoJDBCImpl implements UserDao {
             ResultSet tables = dbm.getTables(null, null, "USERS", null);
 
             if (tables.next()) {
-                stmt.executeUpdate("DROP TABLE users;");
+                stmt.executeUpdate("DROP TABLE users");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void saveUser(String name, String lastName, byte age) {
         try (Connection connection = Util.connectJDBC();
              PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)")) {
+                     "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)")) {
 
             statement.setString(1, name);
             statement.setString(2, lastName);
@@ -63,17 +66,19 @@ public class UserDaoJDBCImpl implements UserDao {
         }
         System.out.println("User с именем — " + name + " добавлен в базу данных");
     }
+
     @Override
     public void removeUserById(long id) {
-        try (   Connection connection = Util.connectJDBC();
-                PreparedStatement statement = connection.prepareStatement(
-                        "DELETE FROM users WHERE id = ?")) {
+        try (Connection connection = Util.connectJDBC();
+             PreparedStatement statement = connection.prepareStatement(
+                     "DELETE FROM users WHERE id = ?")) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
@@ -83,7 +88,7 @@ public class UserDaoJDBCImpl implements UserDao {
             while (rs.next()) {
                 String name = rs.getString("name");
                 String lastName = rs.getString("lastName");
-                byte age = (byte)rs.getInt("age");
+                byte age = (byte) rs.getInt("age");
                 list.add(new User(name, lastName, age));
             }
         } catch (SQLException e) {
@@ -91,6 +96,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
         return list;
     }
+
     @Override
     public void cleanUsersTable() {
         try (Connection connection = Util.connectJDBC();

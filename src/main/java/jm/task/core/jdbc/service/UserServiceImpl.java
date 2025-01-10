@@ -14,6 +14,7 @@ public class UserServiceImpl implements UserService {
     public void createUsersTable() {
         jdbc.createUsersTable();
     }
+
     @Override
     public void dropUsersTable() {
         jdbc.dropUsersTable();
